@@ -1,0 +1,13 @@
+---
+# kubectl create pod web --image=nginx --port=80 --dry-run=client -o yaml > nginx-xxx.yml
+kind: Pod
+apiVersion: v1
+metadata:
+  name: web
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - contarnerPort: 80
+      protocol: TCP
