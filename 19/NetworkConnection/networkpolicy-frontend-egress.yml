@@ -1,0 +1,27 @@
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: frontend-egress-policy
+  namespace: dev
+spec:
+  podSelector:
+    matchLabels:
+      app: frontend
+  policyTypes:
+  - Egress
+  egress:
+  # 1. 외부 인터넷 전체 허용, 내부 Pod 대역 제외
+  - to:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+        except:
+        - 172.16.0.0/16
+  # 2. DNS 조회를 위한 쿠버네티스 내부 DNS 포트 허용
+  - to:
+    - namespaceSelector: {} # 모든 네임스페이스
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
